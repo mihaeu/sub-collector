@@ -1,0 +1,19 @@
+{
+    "name": "mihaeu/sub-collector",
+    "description": "Sub-Collector is a console based app written in PHP, its main purpose is to help batch collecting of subtitles.",
+    "require": {
+        "symfony/console": "*"
+    },
+    "require-dev": {
+        "filp/whoops": "1.*",
+        "raveren/kint": "*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michael Haeuslmann",
+            "email": "haeuslmann@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable"
+}
