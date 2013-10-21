@@ -60,15 +60,16 @@ class SubCollector
 
         // filter only movie files
         return array_filter($files, function($file)
-            {
-                return preg_match('/\.(avi)|(mp4)|(mpeg)|(mpg)|(m4v)|(mkv)$/', $file);
-            });
+        {
+            return preg_match('/\.(avi)|(mp4)|(mpeg)|(mpg)|(m4v)|(mkv)$/', $file);
+        });
     }
 
     /**
      * Downloads and saves the subtitle to the movie.
      *
      * @param string $movie
+     * @return bool
      */
     public function addSubtitleToMovie($movie)
     {
@@ -80,8 +81,7 @@ class SubCollector
 
         if (empty($subtitle))
         {
-            echo 'No exact match found for '.$movieTitle.' on the SubDB database.'.PHP_EOL;
-            return;
+            return false;
         }
 
         // get movie folder
@@ -90,7 +90,7 @@ class SubCollector
         // save subtitle
         $subtitlePath = $movieFolder.'/'.$subtitleFilename;
         file_put_contents($subtitlePath, $subtitle);
-        echo 'Found subtitle for '.$movieTitle.' and saved it to '.$subtitlePath.' ('.filesize($subtitlePath).' bytes)'.PHP_EOL;
+        return true;
     }
 
     /**
@@ -102,15 +102,7 @@ class SubCollector
      */
     public function movieHasNoSubtitle($movie)
     {
-        $subtitleFilename = preg_replace('/\.\w+$/', '.srt', basename($movie));
-        $movieTitle = basename($subtitleFilename, '.srt');
-
-        // if the movie already has a subtitle, ship it
-        if (file_exists(dirname($movie).'/'.$subtitleFilename))
-        {
-            echo 'Movie '.$movieTitle.' already has a subtitle.'.PHP_EOL;
-            return false;
-        }
-        return true;
+        $subtitleFilename = dirname($movie).'/'.preg_replace('/\.\w+$/', '.srt', basename($movie));
+        return ! file_exists($subtitleFilename);
     }
 }
