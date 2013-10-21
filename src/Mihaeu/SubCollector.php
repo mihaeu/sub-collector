@@ -20,7 +20,7 @@ class SubCollector
      */
     public function __construct()
     {
-        $this->subtitleProvider = new SubDBSubProvider();
+        $this->subtitleProvider = new Provider\SubDBSubProvider();
     }
 
     /**

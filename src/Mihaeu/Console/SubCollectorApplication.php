@@ -1,9 +1,8 @@
 <?php
 
-namespace Mihaeu;
+namespace Mihaeu\Console;
 
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * Class SubCollectorApp
@@ -13,5 +12,5 @@ use Symfony\Component\Console\Input\InputInterface;
  */
 class SubCollectorApplication extends Application
 {
-    
+
 }

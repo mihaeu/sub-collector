@@ -1,9 +1,8 @@
 <?php
 
-namespace Mihaeu;
+namespace Mihaeu\Console;
 
 use Symfony\Component\Console\Command\Command;
-
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -37,7 +36,7 @@ class DownloadCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $subCollector = new SubCollector();
+        $subCollector = new \Mihaeu\SubCollector();
         $movies = $subCollector->findMoviesInFolder($input->getArgument('path'));
         foreach ($movies as $movie)
         {
