@@ -7,6 +7,6 @@ ini_set('memory_limit', -1);
 
 use Symfony\Component\Console\Application;
 
-$application = new Application();
-$application->add(new Mihaeu\DownloadCommand());
+$application = new \Mihaeu\SubCollectorApplication();
+//$application->add(new Mihaeu\DownloadCommand());
 $application->run();
