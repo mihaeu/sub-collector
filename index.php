@@ -17,12 +17,6 @@ foreach ($movies as $movie)
 	}
 }
 
-
-
-
-
-
-
 /**
  * Download the subtitle for a movie from the SubDB API.
  *

@@ -15,5 +15,10 @@
             "email": "haeuslmann@gmail.com"
         }
     ],
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-0": {
+            "Mihaeu": "src"
+        }
+    }
 }
