@@ -11,6 +11,19 @@ namespace Mihaeu;
 class SubCollector
 {
     /**
+     * @var SubProviderInterface
+     */
+    private $subtitleProvider;
+
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->subtitleProvider = new SubDBSubProvider();
+    }
+
+    /**
      * Download the subtitle for a movie from the SubDB API.
      *
      * @param  string $filename
@@ -18,42 +31,8 @@ class SubCollector
      */
     public function downloadSubtitle($filename)
     {
-        // block size which is required for the API call
-        $READ_SIZE = 64*1024;
-
-        // open file handle
-        $handle = fopen($filename, 'r');
-
-        // read first part
-        $data = fread($handle, $READ_SIZE);
-
-        // move the file pointer ahead, because we only need the first and the last 
-        // 64KB of the video file
-        fseek($handle, -$READ_SIZE, SEEK_END);
-
-        // read the last part and concat
-        $data .= fread($handle, $READ_SIZE);
-
-        // close the handle
-        fclose($handle);
-
-        // create the hash for subDB
-        $movieHash = md5($data);
-
-        $apiUrl = 'http://api.thesubdb.com/';
-        // $query = '?action=search&hash='.$movieHash;
-        $query = '?action=download&hash='.$movieHash.'&language=en';
-        $curlHandle = curl_init($apiUrl.$query);
-        curl_setopt_array($curlHandle, [
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_USERAGENT => 'SubDB/1.0 (MovieManager/1.0; http://mike-dev.info)',
-                // CURLOPT_VERBOSE => 1,
-                // CURLOPT_HEADER => 1
-            ]);
-        $curlResponse = curl_exec($curlHandle);
-        curl_close($curlHandle);
-
-        return $curlResponse;
+        $hash = $this->subtitleProvider->createMovieHashFromMovieFile($filename);
+        return $this->subtitleProvider->downloadSubtitleByHash($hash);
     }
 
     /**
