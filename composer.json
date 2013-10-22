@@ -5,8 +5,7 @@
         "symfony/console": "*"
     },
     "require-dev": {
-        "filp/whoops": "1.*",
-        "raveren/kint": "*"
+        "phpunit/phpunit": "3.7.*"
     },
     "license": "MIT",
     "authors": [
