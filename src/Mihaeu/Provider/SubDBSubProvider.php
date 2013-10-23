@@ -15,6 +15,11 @@ class SubDBSubProvider implements SubProviderInterface
 
     public function createMovieHashFromMovieFile($movieFile)
     {
+        if ( ! is_file($movieFile))
+        {
+            return false;
+        }
+
         // block size which is required for the API call
         $READ_SIZE = 64 * 1024;
 

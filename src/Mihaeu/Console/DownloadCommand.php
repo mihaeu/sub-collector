@@ -36,7 +36,7 @@ class DownloadCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $subCollector = new \Mihaeu\SubCollector();
+        $subCollector = new \Mihaeu\SubCollector(new \Mihaeu\Provider\SubDBSubProvider());
         $movies = $subCollector->findMoviesInFolder($input->getArgument('path'));
         foreach ($movies as $movie)
         {

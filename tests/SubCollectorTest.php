@@ -1,5 +1,8 @@
 <?php
 
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
+
 class SubCollectorTest extends PHPUnit_Framework_TestCase
 {
     /**
@@ -7,86 +10,110 @@ class SubCollectorTest extends PHPUnit_Framework_TestCase
      */
     private $subCollector;
 
+    /**
+     * @var Mihaeu\Provider\SubProviderInterface
+     */
+    private $mockSubProvider;
+
+    /**
+     * @var  vfsStreamDirectory
+     */
+    private $root;
+
+    private $testDir;
+
     public function setUp()
     {
-        $this->subCollector = new Mihaeu\SubCollector();
+        $this->mockSubProvider = \Mockery::mock('\Mihaeu\Provider\SubDBSubProvider');
+        $this->subCollector = new \Mihaeu\SubCollector($this->mockSubProvider);
 
-        // set up folder structure
-//        $testFolder = __DIR__.'/data';
-//        mkdir($testFolder);
-//
-//        $movieFolder = $testFolder.'/movies';
-//        mkdir($movieFolder);
-//
-//        $nestedMovieFolder = $movieFolder.'/a/b/c/d';
-//        mkdir($nestedMovieFolder, 777, true);
-//
-//        // create dummy files
-//        $dummyFiles = array(
-//            $movieFolder.'/Die Hard.mkv',
-//            $movieFolder.'/Armageddon.avi',
-//            $movieFolder.'/Armageddon.srt',
-//            $nestedMovieFolder.'/Avatar.mp4',
-//            $nestedMovieFolder.'/Avatar.srt',
-//        );
-//        foreach ($dummyFiles as $dummyFile)
-//        {
-//            touch($dummyFile);
-//        }
-    }
-
-    public function tearDown()
-    {
-//        $this->removeDirectoryIncludingContents(__DIR__.'/data');
+        // mock the filesystem
+        $testFiles = array(
+            'movies' => array(
+                'Armageddon.avi' => '',
+                'Armageddon.srt' => '',
+                'Die Hard.mkv' => '',
+                'subFolderA' => array(
+                    'subFolderB' => array(
+                        'subFolderC' => array(
+                            'Avatar.mp4' => '',
+                            'Avatar.srt' => ''
+                        )
+                    )
+                )
+            )
+        );
+        $this->root = vfsStream::setup('testDir', null, $testFiles);
     }
 
     public function testSubtitleCanBeDownloadedIfExists()
     {
-        $subtitle = $this->subCollector->downloadSubtitle('/etc/passwd');
+        // mock sub provider
+        $mock = \Mockery::mock('\Mihaeu\Provider\SubProviderInterface');
+        $mock->shouldReceive('createMovieHashFromMovieFile')
+            ->andReturn('hash');
+        $mock->shouldReceive('downloadSubtitleByHash')
+            ->andReturn('a subtitle');
+
+        $subCollector = new \Mihaeu\SubCollector($mock);
+        $subtitle = $subCollector->downloadSubtitle('');
         $this->assertNotEmpty($subtitle);
     }
 
     public function testSubtitleCannotBeDownloadedIfItDoesNotExist()
     {
-        $subtitle = $this->subCollector->downloadSubtitle(__DIR__);
-        $this->assertEmpty($subtitle);
+        $mock = \Mockery::mock('\Mihaeu\Provider\SubProviderInterface');
+        $mock->shouldReceive('createMovieHashFromMovieFile')
+            ->andReturn(false);
+        $subCollector = new \Mihaeu\SubCollector($mock);
+        $subtitle = $subCollector->downloadSubtitle('');
+        $this->assertFalse($subtitle);
     }
 
     public function testOnlyMoviesAreFoundInAFolder()
     {
-        $movies = $this->subCollector->findMoviesInFolder(__DIR__);
-        $this->assertEquals(count($movies), 5);
+        $movies = $this->subCollector->findMoviesInFolder(vfsStream::url('testDir'));
+        $this->assertEquals(3, count($movies));
     }
 
     public function testMoviesCanBeNestedDeeplyInsideAFolder()
     {
-        $movies = $this->subCollector->findMoviesInFolder(__DIR__);
-        $this->assertEquals(count($movies), 5);
+        $fakePath = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movies'.DIRECTORY_SEPARATOR.'subFolderA';
+        $movies = $this->subCollector->findMoviesInFolder($fakePath);
+        $this->assertEquals(1, count($movies));
     }
 
     public function testMovieWithSubtitleWillBeDetected()
     {
-        $this->assertTrue($this->subCollector->movieHasNoSubtitle(__DIR__));
+        $fakeMovieWithSubtitle = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movies'.DIRECTORY_SEPARATOR.'Armageddon.avi';
+        $this->assertTrue($this->subCollector->movieHasSubtitle($fakeMovieWithSubtitle));
+    }
+
+    public function testMovieWithoutSubtitleWillBeDetected()
+    {
+        $fakeMovieWithoutSubtitle = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movies'.DIRECTORY_SEPARATOR.'Die Hard.mkv';
+        $this->assertTrue($this->subCollector->movieHasNoSubtitle($fakeMovieWithoutSubtitle));
     }
 
     public function testDownloadedSubtitleWillBeSavedAsASrtFile()
     {
-        $this->assertTrue($this->subCollector->addSubtitleToMovie(__DIR__));
-    }
+        // mock the sub provider
+        $mock = \Mockery::mock('\Mihaeu\Provider\SubProviderInterface');
+        $mock->shouldReceive('createMovieHashFromMovieFile')
+            ->andReturn('hash');
+        $mock->shouldReceive('downloadSubtitleByHash')
+            ->andReturn('a subtitle');
+        $subCollector = new \Mihaeu\SubCollector($mock);
 
-    private function removeDirectoryIncludingContents($dir)
-    {
-        foreach (glob($dir . '/*') as $file)
-        {
-            if (is_dir($file))
-            {
-                $this->removeDirectoryIncludingContents($file);
-            }
-            else
-            {
-                unlink($file);
-            }
-        }
-        rmdir($dir);
+        // sub doesnt exist before
+        $fakeSubtitle = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movies'.DIRECTORY_SEPARATOR.'Die Hard.srt';
+        $this->assertFalse(file_exists($fakeSubtitle));
+
+        // fetch sub
+        $fakeMovieWithoutSubtitle = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movies'.DIRECTORY_SEPARATOR.'Die Hard.mkv';
+        $this->assertTrue($subCollector->addSubtitleToMovie($fakeMovieWithoutSubtitle));
+
+        // sub should exist
+        $this->assertTrue(file_exists($fakeSubtitle));
     }
 }

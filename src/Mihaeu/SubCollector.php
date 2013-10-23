@@ -11,27 +11,32 @@ namespace Mihaeu;
 class SubCollector
 {
     /**
-     * @var SubProviderInterface
+     * @var Provider\SubProviderInterface
      */
     private $subtitleProvider;
 
     /**
      * Constructor.
      */
-    public function __construct()
+    public function __construct(Provider\SubProviderInterface $subtitleProvider)
     {
-        $this->subtitleProvider = new Provider\SubDBSubProvider();
+        $this->subtitleProvider = $subtitleProvider;
     }
 
     /**
      * Download the subtitle for a movie from the SubDB API.
      *
      * @param  string $filename
-     * @return string
+     * @return string|bool
      */
     public function downloadSubtitle($filename)
     {
         $hash = $this->subtitleProvider->createMovieHashFromMovieFile($filename);
+        if ( ! $hash)
+        {
+            return false;
+        }
+
         return $this->subtitleProvider->downloadSubtitleByHash($hash);
     }
 
@@ -45,7 +50,7 @@ class SubCollector
     {
         if ( ! file_exists($folder) || ! is_dir($folder))
         {
-            throw new \Exception("No folder.");
+            return [];
         }
 
         $fileIterator = new \RecursiveIteratorIterator(
@@ -100,9 +105,21 @@ class SubCollector
      * @param   string $movie
      * @return  bool
      */
-    public function movieHasNoSubtitle($movie)
+    public function movieHasSubtitle($movie)
     {
         $subtitleFilename = dirname($movie).'/'.preg_replace('/\.\w+$/', '.srt', basename($movie));
-        return ! file_exists($subtitleFilename);
+        return file_exists($subtitleFilename);
+    }
+
+    /**
+    * Checks if a movie already has a subtitle (filename with the same basename,
+    * but .srt extension)
+    *
+    * @param   string $movie
+    * @return  bool
+    */
+    public function movieHasNoSubtitle($movie)
+    {
+        return ! $this->movieHasSubtitle($movie);
     }
 }
