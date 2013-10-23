@@ -74,6 +74,10 @@ class SubCollectorTest extends PHPUnit_Framework_TestCase
     {
         $movies = $this->subCollector->findMoviesInFolder(vfsStream::url('testDir'));
         $this->assertEquals(3, count($movies));
+
+        // rejects files
+        $fakeMovie = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movies'.DIRECTORY_SEPARATOR.'Armageddon.avi';
+        $this->assertEquals([], $this->subCollector->findMoviesInFolder($fakeMovie));
     }
 
     public function testMoviesCanBeNestedDeeplyInsideAFolder()
@@ -115,5 +119,17 @@ class SubCollectorTest extends PHPUnit_Framework_TestCase
 
         // sub should exist
         $this->assertTrue(file_exists($fakeSubtitle));
+    }
+
+    public function testSubtitleFileWillOnlySavedWhenSubtitleWasFound()
+    {
+        // mock the sub provider
+        $mock = \Mockery::mock('\Mihaeu\Provider\SubProviderInterface');
+        $mock->shouldReceive('createMovieHashFromMovieFile')
+            ->andReturn(false);
+
+        $subCollector = new \Mihaeu\SubCollector($mock);
+        $fakeMovieWithoutSubtitle = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movies'.DIRECTORY_SEPARATOR.'Die Hard.mkv';
+        $this->assertFalse($subCollector->addSubtitleToMovie($fakeMovieWithoutSubtitle));
     }
 }
