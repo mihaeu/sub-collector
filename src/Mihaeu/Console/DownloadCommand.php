@@ -37,10 +37,11 @@ class DownloadCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $subCollector = new \Mihaeu\SubCollector(new \Mihaeu\Provider\SubDBSubProvider());
-        $movies = $subCollector->findMoviesInFolder($input->getArgument('path'));
+        $movieFinder = new \Mihaeu\Movie\Finder($input->getArgument('path'));
+        $movies = $movieFinder->findMoviesInFolder();
         foreach ($movies as $movie)
         {
-            if ($subCollector->movieHasNoSubtitle($movie))
+            if ($movieFinder->movieHasNoSubtitle($movie))
             {
                 $subtitleHasBeenDownloaded = $subCollector->addSubtitleToMovie($movie);
                 if ($subtitleHasBeenDownloaded)

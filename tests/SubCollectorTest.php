@@ -70,35 +70,6 @@ class SubCollectorTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($subtitle);
     }
 
-    public function testOnlyMoviesAreFoundInAFolder()
-    {
-        $movies = $this->subCollector->findMoviesInFolder(vfsStream::url('testDir'));
-        $this->assertEquals(3, count($movies));
-
-        // rejects files
-        $fakeMovie = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movies'.DIRECTORY_SEPARATOR.'Armageddon.avi';
-        $this->assertEquals([], $this->subCollector->findMoviesInFolder($fakeMovie));
-    }
-
-    public function testMoviesCanBeNestedDeeplyInsideAFolder()
-    {
-        $fakePath = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movies'.DIRECTORY_SEPARATOR.'subFolderA';
-        $movies = $this->subCollector->findMoviesInFolder($fakePath);
-        $this->assertEquals(1, count($movies));
-    }
-
-    public function testMovieWithSubtitleWillBeDetected()
-    {
-        $fakeMovieWithSubtitle = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movies'.DIRECTORY_SEPARATOR.'Armageddon.avi';
-        $this->assertTrue($this->subCollector->movieHasSubtitle($fakeMovieWithSubtitle));
-    }
-
-    public function testMovieWithoutSubtitleWillBeDetected()
-    {
-        $fakeMovieWithoutSubtitle = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movies'.DIRECTORY_SEPARATOR.'Die Hard.mkv';
-        $this->assertTrue($this->subCollector->movieHasNoSubtitle($fakeMovieWithoutSubtitle));
-    }
-
     public function testDownloadedSubtitleWillBeSavedAsASrtFile()
     {
         // mock the sub provider
