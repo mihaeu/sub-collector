@@ -26,10 +26,10 @@ class SubCollector
     /**
      * Download the subtitle for a movie from the SubDB API.
      *
-     * @param  Movie\File
+     * @param  Movie\Movie
      * @return string|bool
      */
-    public function downloadSubtitle(Movie\File $movie)
+    public function downloadSubtitle(Movie\Movie $movie)
     {
         $hash = $this->subtitleProvider->createMovieHashFromMovieFile($movie);
         if ( ! $hash)
@@ -43,10 +43,10 @@ class SubCollector
     /**
      * Downloads and saves the subtitle to the movie.
      *
-     * @param Movie\File $movie
+     * @param Movie\Movie $movie
      * @return bool
      */
-    public function addSubtitleToMovie(Movie\File $movie)
+    public function addSubtitleToMovie(Movie\Movie $movie)
     {
         // fetch subtitle
         $subtitle = $this->downloadSubtitle($movie);

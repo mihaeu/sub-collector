@@ -59,14 +59,14 @@ class FinderTest extends PHPUnit_Framework_TestCase
     public function testMovieWithSubtitleWillBeDetected()
     {
         $fakeMovieWithSubtitle = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movies'.DIRECTORY_SEPARATOR.'Armageddon.avi';
-        $movie = new \Mihaeu\Movie\File($fakeMovieWithSubtitle);
+        $movie = new \Mihaeu\Movie\Movie($fakeMovieWithSubtitle);
         $this->assertTrue($movie->hasSubtitle());
     }
 
     public function testMovieWithoutSubtitleWillBeDetected()
     {
         $fakeMovieWithoutSubtitle = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movies'.DIRECTORY_SEPARATOR.'Die Hard.mkv';
-        $movie = new \Mihaeu\Movie\File($fakeMovieWithoutSubtitle);
+        $movie = new \Mihaeu\Movie\Movie($fakeMovieWithoutSubtitle);
         $this->assertTrue($movie->hasNoSubtitle());
     }
 

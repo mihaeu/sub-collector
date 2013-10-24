@@ -46,16 +46,16 @@ class DownloadCommand extends Command
                 $subtitleHasBeenDownloaded = $subCollector->addSubtitleToMovie($movie);
                 if ($subtitleHasBeenDownloaded)
                 {
-                    $output->writeln( '<info>Found subtitle for '.$movie.'</info>');
+                    $output->writeln( '<info>Found subtitle for '.$movie->getName().'</info>');
                 }
                 else
                 {
-                    $output->writeln('<comment>No exact match found for '.$movie.'</comment>');
+                    $output->writeln('<comment>No exact match found for '.$movie->getName().'</comment>');
                 }
             }
             else
             {
-                $output->writeln('<comment>'.$movie.' already has a subtitle.</comment>');
+                $output->writeln('<comment>'.$movie->getName().' already has a subtitle.</comment>');
             }
         }
     }

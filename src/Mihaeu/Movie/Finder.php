@@ -52,7 +52,7 @@ class Finder
                 continue;
             }
 
-            $movieFile = new File($key);
+            $movieFile = new Movie($key);
             if (in_array($movieFile->getMovieFileExtension(), $this->movieFileExtensions))
             {
                 $movies[] = $movieFile;

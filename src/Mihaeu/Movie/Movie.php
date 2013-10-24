@@ -8,7 +8,7 @@ namespace Mihaeu\Movie;
  * @package Mihaeu\Movie
  * @author Michael Haeuslmann <haeuslmann@gmail.com>
  */
-class File
+class Movie
 {
     /**
      * @var \SplFileObject
@@ -76,5 +76,13 @@ class File
     public function getMovieFilename()
     {
         return $this->movieFile->getPath().DIRECTORY_SEPARATOR.$this->movieFile->getBasename();
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->movieFile->getBasename();
     }
 }
