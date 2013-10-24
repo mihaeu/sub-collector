@@ -1,3 +1,4 @@
+
 # Sub-Collector
 
 Sub-Collector is a small project that I started, because I was sick of manually searching for subtitles for my ever growing collection of movies.
@@ -40,6 +41,8 @@ php bin/sub-collector download [PATH_TO_YOUR_MOVIE_COLLECTION]
 ```
 
 ## Open Tasks
-- [ ] Tests, tests, tests
-- [ ] Create a separate movie class
+- [x] Tests, tests, tests
+- [x] Create a separate movie class
 - [ ] Add further subtitle sources
+- [ ] Create a composer installer
+- [ ] Add a DIC
