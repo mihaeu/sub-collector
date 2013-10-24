@@ -41,7 +41,7 @@ class DownloadCommand extends Command
         $movies = $movieFinder->findMoviesInFolder();
         foreach ($movies as $movie)
         {
-            if ($movieFinder->movieHasNoSubtitle($movie))
+            if ($movie->hasNoSubtitle())
             {
                 $subtitleHasBeenDownloaded = $subCollector->addSubtitleToMovie($movie);
                 if ($subtitleHasBeenDownloaded)

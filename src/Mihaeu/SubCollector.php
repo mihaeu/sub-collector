@@ -26,12 +26,12 @@ class SubCollector
     /**
      * Download the subtitle for a movie from the SubDB API.
      *
-     * @param  string $filename
+     * @param  Movie\File
      * @return string|bool
      */
-    public function downloadSubtitle($filename)
+    public function downloadSubtitle(Movie\File $movie)
     {
-        $hash = $this->subtitleProvider->createMovieHashFromMovieFile($filename);
+        $hash = $this->subtitleProvider->createMovieHashFromMovieFile($movie);
         if ( ! $hash)
         {
             return false;
@@ -43,10 +43,10 @@ class SubCollector
     /**
      * Downloads and saves the subtitle to the movie.
      *
-     * @param string $movie
+     * @param Movie\File $movie
      * @return bool
      */
-    public function addSubtitleToMovie($movie)
+    public function addSubtitleToMovie(Movie\File $movie)
     {
         // fetch subtitle
         $subtitle = $this->downloadSubtitle($movie);
@@ -56,7 +56,7 @@ class SubCollector
         }
 
         // save subtitle
-        $subtitlePath = preg_replace('/\.\w+$/', '.srt', $movie);
+        $subtitlePath = preg_replace('/\.\w+$/', '.srt', $movie->getMovieFilename());
         $bytesWritten = file_put_contents($subtitlePath, $subtitle);
         return $bytesWritten !== false;
     }

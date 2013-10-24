@@ -59,12 +59,23 @@ class FinderTest extends PHPUnit_Framework_TestCase
     public function testMovieWithSubtitleWillBeDetected()
     {
         $fakeMovieWithSubtitle = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movies'.DIRECTORY_SEPARATOR.'Armageddon.avi';
-        $this->assertTrue($this->movieFinder->movieHasSubtitle($fakeMovieWithSubtitle));
+        $movie = new \Mihaeu\Movie\File($fakeMovieWithSubtitle);
+        $this->assertTrue($movie->hasSubtitle());
     }
 
     public function testMovieWithoutSubtitleWillBeDetected()
     {
         $fakeMovieWithoutSubtitle = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movies'.DIRECTORY_SEPARATOR.'Die Hard.mkv';
-        $this->assertTrue($this->movieFinder->movieHasNoSubtitle($fakeMovieWithoutSubtitle));
+        $movie = new \Mihaeu\Movie\File($fakeMovieWithoutSubtitle);
+        $this->assertTrue($movie->hasNoSubtitle());
+    }
+
+    public function testCustomFileExtensionsWillBeDetected()
+    {
+        // for testing purposes subtitles will be treated as custom movies (content makes no difference)
+        // if subtitles are going to be detected, so will movies
+        $this->movieFinder = new Mihaeu\Movie\Finder(vfsStream::url('testDir'), ['srt']);
+        $movies = $this->movieFinder->findMoviesInFolder();
+        $this->assertEquals(2, count($movies));
     }
 }

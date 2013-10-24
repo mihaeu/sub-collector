@@ -44,54 +44,22 @@ class Finder
             new \RecursiveDirectoryIterator($this->directory),
             \RecursiveIteratorIterator::SELF_FIRST
         );
-        $files = [];
+        $movies = [];
         foreach ($fileIterator as $key => $value)
         {
-            $files[] = $key;
+            if (is_dir($key))
+            {
+                continue;
+            }
+
+            $movieFile = new File($key);
+            if (in_array($movieFile->getMovieFileExtension(), $this->movieFileExtensions))
+            {
+                $movies[] = $movieFile;
+            }
+
         }
-
-        // filter only movie files
-        return array_filter($files, function($file)
-        {
-            $fileExtensionRegex = '/\.('.implode(')|(', $this->movieFileExtensions).')$/';
-            return preg_match($fileExtensionRegex, $file);
-        });
-    }
-
-    /**
-     * Checks if a movie already has a subtitle (filename with the same basename,
-     * but .srt extension)
-     *
-     * @param   string $movie
-     * @return  bool
-     */
-    public function movieHasSubtitle($movie)
-    {
-        $subtitleFilename = dirname($movie).DIRECTORY_SEPARATOR.$this->generateSubtitleName($movie);
-        return file_exists($subtitleFilename);
-    }
-
-    /**
-     * Checks if a movie already has a subtitle (filename with the same basename,
-     * but .srt extension)
-     *
-     * @param   string $movie
-     * @return  bool
-     */
-    public function movieHasNoSubtitle($movie)
-    {
-        return ! $this->movieHasSubtitle($movie);
-    }
-
-    /**
-     * Generates subtitle name from a movie file (same name, but .srt extension).
-     *
-     * @param $movie
-     * @return mixed
-     */
-    public function generateSubtitleName($movie)
-    {
-        return preg_replace('/\.\w+$/', '.srt', basename($movie));
+        return $movies;
     }
 
     /**
