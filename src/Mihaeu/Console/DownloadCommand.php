@@ -8,6 +8,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use \Mihaeu\Provider\SubProviderInterface;
+use \Mihaeu\Provider\SubDBSubProvider;
+
 /**
  * Class DownloadCommand
  * @package Mihaeu
@@ -15,6 +18,22 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class DownloadCommand extends Command
 {
+    /**
+     * @var SubProviderInterface
+     */
+    private $subProvider;
+
+    public function __construct(SubProviderInterface $subProvider = null)
+    {
+        $this->subProvider = $subProvider;
+        if ($subProvider === null)
+        {
+            $this->subProvider = new SubDBSubProvider();
+        }
+
+        parent::__construct();
+    }
+
     protected function configure()
     {
         $this
@@ -25,18 +44,12 @@ class DownloadCommand extends Command
                 InputArgument::REQUIRED,
                 'Path to the folder that contains the movie files.'
             )
-            ->addOption(
-                'yell',
-                null,
-                InputOption::VALUE_NONE,
-                'If set, the task will yell in uppercase letters'
-            )
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $subCollector = new \Mihaeu\SubCollector(new \Mihaeu\Provider\SubDBSubProvider());
+        $subCollector = new \Mihaeu\SubCollector($this->subProvider);
         $movieFinder = new \Mihaeu\Movie\Finder($input->getArgument('path'));
         $movies = $movieFinder->findMoviesInFolder();
         foreach ($movies as $movie)
@@ -46,7 +59,7 @@ class DownloadCommand extends Command
                 $subtitleHasBeenDownloaded = $subCollector->addSubtitleToMovie($movie);
                 if ($subtitleHasBeenDownloaded)
                 {
-                    $output->writeln( '<info>Found subtitle for '.$movie->getName().'</info>');
+                    $output->writeln( '<info>Downloaded subtitle for '.$movie->getName().'</info>');
                 }
                 else
                 {
