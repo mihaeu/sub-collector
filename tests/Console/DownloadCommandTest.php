@@ -7,6 +7,14 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use Mihaeu\Console\SubCollectorApplication;
 use Mihaeu\Console\DownloadCommand;
 
+/**
+ * DownloadCommandTest
+ *
+ * Dependencies for the Movie\Finder and the Provider\SubProvider classes are being
+ * mocked to avoid side-effects and to allow everyone to run these tests.
+ *
+ * @author Michael Haeuslmann <haeuslmann@gmail.com>
+ */
 class DownloadCommandTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
@@ -41,7 +49,7 @@ class DownloadCommandTest extends PHPUnit_Framework_TestCase
 
         $movieFolderWithoutSubtitle = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movieWithoutSubtitle';
         $commandTester->execute(array('command' => $command->getName(), 'path' => $movieFolderWithoutSubtitle));
-        $this->assertRegExp('/.../', $commandTester->getDisplay());
+        $this->assertRegExp('/Downloaded subtitle for /', $commandTester->getDisplay());
     }
 
     public function testDownloadOfSubtitlesForMovieWithoutSubtitleButNoSubtitleOnServer()
@@ -61,7 +69,7 @@ class DownloadCommandTest extends PHPUnit_Framework_TestCase
 
         $movieFolderWithoutSubtitle = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movieWithoutSubtitle';
         $commandTester->execute(array('command' => $command->getName(), 'path' => $movieFolderWithoutSubtitle));
-        $this->assertRegExp('/.../', $commandTester->getDisplay());
+        $this->assertRegExp('/No exact match found for/', $commandTester->getDisplay());
     }
 
     public function testDownloadingOfSubtitlesForAMovieWhichHasSubtitlesIsSkipped()
@@ -73,6 +81,6 @@ class DownloadCommandTest extends PHPUnit_Framework_TestCase
 
         $movieFolderWithSubtitle = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movieWithSubtitle';
         $commandTester->execute(array('command' => $command->getName(), 'path' => $movieFolderWithSubtitle));
-        $this->assertRegExp('/.../', $commandTester->getDisplay());
+        $this->assertRegExp('/already has a subtitle/', $commandTester->getDisplay());
     }
 }
