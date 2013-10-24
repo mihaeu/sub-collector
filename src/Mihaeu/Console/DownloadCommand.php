@@ -37,24 +37,25 @@ class DownloadCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $subCollector = new \Mihaeu\SubCollector(new \Mihaeu\Provider\SubDBSubProvider());
-        $movies = $subCollector->findMoviesInFolder($input->getArgument('path'));
+        $movieFinder = new \Mihaeu\Movie\Finder($input->getArgument('path'));
+        $movies = $movieFinder->findMoviesInFolder();
         foreach ($movies as $movie)
         {
-            if ($subCollector->movieHasNoSubtitle($movie))
+            if ($movie->hasNoSubtitle())
             {
                 $subtitleHasBeenDownloaded = $subCollector->addSubtitleToMovie($movie);
                 if ($subtitleHasBeenDownloaded)
                 {
-                    $output->writeln( '<info>Found subtitle for '.$movie.'</info>');
+                    $output->writeln( '<info>Found subtitle for '.$movie->getName().'</info>');
                 }
                 else
                 {
-                    $output->writeln('<comment>No exact match found for '.$movie.'</comment>');
+                    $output->writeln('<comment>No exact match found for '.$movie->getName().'</comment>');
                 }
             }
             else
             {
-                $output->writeln('<comment>'.$movie.' already has a subtitle.</comment>');
+                $output->writeln('<comment>'.$movie->getName().' already has a subtitle.</comment>');
             }
         }
     }

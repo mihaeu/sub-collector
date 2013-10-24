@@ -9,7 +9,7 @@ namespace Mihaeu\Provider;
  */
 interface SubProviderInterface
 {
-    public function createMovieHashFromMovieFile($movieFile);
+    public function createMovieHashFromMovieFile(\Mihaeu\Movie\Movie $movie);
 
     public function downloadSubtitleByHash($hash);
 }
