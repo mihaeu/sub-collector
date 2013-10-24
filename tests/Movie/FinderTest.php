@@ -3,6 +3,13 @@
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 
+/**
+ * Class FinderTest
+ *
+ * The Finder relies heavily on the filesystem, which is being mocked by vfs:://stream for testing purposes.
+ *
+ * @author Michael Haeuslmann <haeuslmann@gmail.com>
+ */
 class FinderTest extends PHPUnit_Framework_TestCase
 {
     /**

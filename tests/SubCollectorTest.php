@@ -3,6 +3,13 @@
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 
+/**
+ * Class SubCollectorTest
+ *
+ * The SubCollector requires both the filesystem and the Providers to be mocked.
+ *
+ * @author Michael Haeuslmann <haeuslmann@gmail.com>
+ */
 class SubCollectorTest extends PHPUnit_Framework_TestCase
 {
     /**
