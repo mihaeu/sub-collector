@@ -18,7 +18,7 @@ class Finder
     /**
      * @var array
      */
-    private $movieFileExtensions = ['mov', 'mkv', 'avi', 'mp4', 'mpg', 'mpeg', 'mts', 'flv', 'wmv'];
+    private $movieFileExtensions = array('mov', 'mkv', 'avi', 'mp4', 'mpg', 'mpeg', 'mts', 'flv', 'wmv');
 
     /**
      * Constructor.

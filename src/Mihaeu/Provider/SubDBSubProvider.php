@@ -41,12 +41,10 @@ class SubDBSubProvider implements SubProviderInterface
     {
         $query = '?action=download&hash='.$hash.'&language=en';
         $curlHandle = curl_init(self::API_URL.$query);
-        curl_setopt_array($curlHandle, [
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_USERAGENT => self::API_USERAGENT,
-                // CURLOPT_VERBOSE => 1,
-                // CURLOPT_HEADER => 1
-            ]);
+        curl_setopt_array($curlHandle, array(
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_USERAGENT => self::API_USERAGENT
+        ));
         $curlResponse = curl_exec($curlHandle);
         curl_close($curlHandle);
 
