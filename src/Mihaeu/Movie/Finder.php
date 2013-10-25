@@ -23,7 +23,7 @@ class Finder
     /**
      * Constructor.
      */
-    public function __construct($directory, array $movieFileExtensions = [])
+    public function __construct($directory, array $movieFileExtensions = array())
     {
         $this->setDirectory($directory);
 
