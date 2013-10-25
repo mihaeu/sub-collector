@@ -44,7 +44,7 @@ class Finder
             new \RecursiveDirectoryIterator($this->directory),
             \RecursiveIteratorIterator::SELF_FIRST
         );
-        $movies = [];
+        $movies = array();
         foreach ($fileIterator as $key => $value)
         {
             if (is_dir($key))
