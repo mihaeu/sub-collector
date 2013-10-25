@@ -1,6 +1,7 @@
 {
     "name": "mihaeu/sub-collector",
     "description": "Sub-Collector is a console based app written in PHP, its main purpose is to help batch collecting of subtitles.",
+    "keywords": ["subtitle", "SubDB", "movie"],
     "require": {
         "symfony/console": "2.*",
         "php": ">=5.3.3"
