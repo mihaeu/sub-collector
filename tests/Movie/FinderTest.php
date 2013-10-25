@@ -81,7 +81,7 @@ class FinderTest extends PHPUnit_Framework_TestCase
     {
         // for testing purposes subtitles will be treated as custom movies (content makes no difference)
         // if subtitles are going to be detected, so will movies
-        $this->movieFinder = new Mihaeu\Movie\Finder(vfsStream::url('testDir'), ['srt']);
+        $this->movieFinder = new Mihaeu\Movie\Finder(vfsStream::url('testDir'), array('srt'));
         $movies = $this->movieFinder->findMoviesInFolder();
         $this->assertEquals(2, count($movies));
     }
