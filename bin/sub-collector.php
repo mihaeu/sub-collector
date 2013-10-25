@@ -1,15 +1,23 @@
+#!/usr/bin/env php
 <?php
+
+if (!file_exists(__DIR__.'/../vendor/autoload.php')) {
+    throw new \RuntimeException(
+        "\n"
+            ."[ERROR] Sub-Collector depends on some external libraries and components.\n"
+            ."It seems that those dependencies aren't properly installed.\n\n"
+            ."Perhaps you forgot to execute 'php composer.phar install' before\n"
+            ."using Sub-Collector for the first time?\n\n"
+            ."This command requires that you have previously installed Composer.\n"
+            ."To do so, execute the following command:\n\n"
+            ." $ curl -s http://getcomposer.org/installer | php"
+            ."\n\n"
+    );
+}
 
 require __DIR__.'/../vendor/autoload.php';
 
-use \Mihaeu\Console\SubCollectorApplication;
-use \Mihaeu\Console\DownloadCommand;
+//ini_set('memory_limit', -1);
 
-// script needs to handle huge files (e.g. bluray rips with 16GB)
-ini_set('memory_limit', -1);
-
-use Symfony\Component\Console\Application;
-
-$application = new SubCollectorApplication();
-$application->add(new DownloadCommand());
+$application = new \Mihaeu\Console\SubCollectorApplication();
 $application->run();
