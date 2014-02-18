@@ -44,8 +44,6 @@ class SubDBSubProvider implements SubProviderInterface
         curl_setopt_array($curlHandle, [
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_USERAGENT => self::API_USERAGENT,
-                // CURLOPT_VERBOSE => 1,
-                // CURLOPT_HEADER => 1
             ]);
         $curlResponse = curl_exec($curlHandle);
         curl_close($curlHandle);
