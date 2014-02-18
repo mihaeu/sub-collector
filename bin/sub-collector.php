@@ -1,15 +1,23 @@
+#!/usr/bin/env php
 <?php
 
-require __DIR__.'/../vendor/autoload.php';
+$files = [
+    // installed as composer dependency: %ROOT%/vendor/bin/submod
+    __DIR__.'/../autoload.php',
 
-use \Mihaeu\Console\SubCollectorApplication;
-use \Mihaeu\Console\DownloadCommand;
+    // installed as main package: %ROOT%/bin/submod
+    __DIR__.'/../vendor/autoload.php'
+];
+foreach ($files as $file) {
+    if (file_exists($file)) {
+        require $file;
+        break;
+    }
+}
 
 // script needs to handle huge files (e.g. bluray rips with 16GB)
 ini_set('memory_limit', -1);
 
-use Symfony\Component\Console\Application;
-
-$application = new SubCollectorApplication();
-$application->add(new DownloadCommand());
+$application = new \Mihaeu\Console\SubCollectorApplication();
+$application->add(new \Mihaeu\Console\DownloadCommand());
 $application->run();
