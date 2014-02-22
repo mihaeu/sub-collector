@@ -18,12 +18,15 @@ class Finder
     /**
      * @var array
      */
-    private $movieFileExtensions = ['mov', 'mkv', 'avi', 'mp4', 'mpg', 'mpeg', 'mts', 'flv', 'wmv'];
+    private $movieFileExtensions = array(
+        'mov', 'mkv', 'avi', 'mp4', 'mpg',
+        'mpeg', 'mts', 'flv', 'wmv'
+    );
 
     /**
      * Constructor.
      */
-    public function __construct($directory, array $movieFileExtensions = [])
+    public function __construct($directory, array $movieFileExtensions = array())
     {
         $this->setDirectory($directory);
 
@@ -44,7 +47,7 @@ class Finder
             new \RecursiveDirectoryIterator($this->directory),
             \RecursiveIteratorIterator::SELF_FIRST
         );
-        $movies = [];
+        $movies = array();
         foreach ($fileIterator as $key => $value)
         {
             if (is_dir($key))
