@@ -85,4 +85,19 @@ class FinderTest extends PHPUnit_Framework_TestCase
         $movies = $this->movieFinder->findMoviesInFolder();
         $this->assertEquals(2, count($movies));
     }
+
+    public function testIgnoresFilesItCannotRead()
+    {
+        // create a temp movie file, which cannot be read
+        $tmpFolder = sys_get_temp_dir().DIRECTORY_SEPARATOR.'phpunit_mihaeu';
+        if (!is_dir($tmpFolder)) {
+            mkdir($tmpFolder);
+        }
+        $unreadableFile = $tmpFolder.DIRECTORY_SEPARATOR.'test.avi';
+        touch($unreadableFile);
+        chmod($unreadableFile, 000); // unreadable file
+        
+        $movieFinder = new Mihaeu\Movie\Finder($tmpFolder);
+        $this->assertEquals(0, count($movieFinder->findMoviesInFolder()));
+    }
 }

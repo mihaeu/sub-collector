@@ -50,7 +50,7 @@ class Finder
         $movies = array();
         foreach ($fileIterator as $key => $value)
         {
-            if (is_dir($key))
+            if (is_dir($key) || !is_readable($key))
             {
                 continue;
             }
