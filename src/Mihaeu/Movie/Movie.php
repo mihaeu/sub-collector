@@ -37,7 +37,7 @@ class Movie
     {
         $this->movieFile = new \SplFileObject($movieFile);
         $this->movieFileExtension = $this->movieFile->getExtension();
-        $this->movieName = preg_replace('/\.[0-9a-zA-Z]+$/', '', $this->movieFile->getBasename());
+        $this->movieName = $this->getName();
 
         $subtitleFile = $this->movieFile->getPath().DIRECTORY_SEPARATOR.$this->movieName.'.srt';
         if (file_exists($subtitleFile))
@@ -83,6 +83,6 @@ class Movie
      */
     public function getName()
     {
-        return $this->movieFile->getBasename();
+        return $this->movieFile->getBasename('.'.$this->movieFile->getExtension());
     }
 }
