@@ -55,8 +55,15 @@ class Finder
                 continue;
             }
 
-            $movieFile = new Movie($key);
-            if (in_array($movieFile->getMovieFileExtension(), $this->movieFileExtensions))
+            $movieFile = null;
+            try {
+                $movieFile = new Movie($key);
+            } catch (\RuntimeException $e) {
+                // don't process system files              
+            }
+
+            if ($movieFile !== null
+                && in_array($movieFile->getMovieFileExtension(), $this->movieFileExtensions))
             {
                 $movies[] = $movieFile;
             }
