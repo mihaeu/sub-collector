@@ -1,6 +1,6 @@
 <?php
 
-namespace Mihaeu;
+namespace Mihaeu\SubCollector;
 
 /**
  * This class is the main an orchestrates the different components.

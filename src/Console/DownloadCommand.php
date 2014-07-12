@@ -1,6 +1,6 @@
 <?php
 
-namespace Mihaeu\Console;
+namespace Mihaeu\SubCollector\Console;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

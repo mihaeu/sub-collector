@@ -1,6 +1,6 @@
 <?php
 
-namespace Mihaeu\Movie;
+namespace Mihaeu\SubCollector\Movie;
 
 /**
  * Searches and identifies movie files.

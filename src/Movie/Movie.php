@@ -1,6 +1,6 @@
 <?php
 
-namespace Mihaeu\Movie;
+namespace Mihaeu\SubCollector\Movie;
 
 /**
  * Represents a movie file.

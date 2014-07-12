@@ -1,6 +1,6 @@
 <?php
 
-namespace Mihaeu\Provider;
+namespace Mihaeu\SubCollector\Provider;
 
 /**
  * Class SubProviderInterface.php

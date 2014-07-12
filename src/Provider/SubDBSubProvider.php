@@ -1,6 +1,6 @@
 <?php
 
-namespace Mihaeu\Provider;
+namespace Mihaeu\SubCollector\Provider;
 
 /**
  * Implementation for the SubDB API.
