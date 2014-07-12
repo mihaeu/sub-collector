@@ -1,27 +1,27 @@
 {
     "name": "mihaeu/sub-collector",
-    "description": "Sub-Collector is a console based app written in PHP, its main purpose is to help batch collecting of subtitles.",
+    "description": "Sub-Collector is a console based app written in PHP, its main purpose is to batch collect subtitles.",
     "keywords": ["subtitle", "SubDB", "movie"],
-    "require": {
-        "symfony/console": "2.*",
-        "php": ">=5.3.3"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "3.7.*",
-        "mikey179/vfsStream": "1.*",
-        "mockery/mockery": "dev-master@dev"
-    },
-    "license": "MIT",
     "authors": [
         {
             "name": "Michael Haeuslmann",
             "email": "haeuslmann@gmail.com"
         }
     ],
+    "license": "MIT",
+    "require": {
+        "symfony/console":      "2.*",
+        "php":                  ">=5.3.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit":      "4.*",
+        "mikey179/vfsStream":   "1.*",
+        "mockery/mockery":      "0.*"
+    },
     "minimum-stability": "stable",
     "autoload": {
-        "psr-0": {
-            "Mihaeu": "src"
+        "psr-4": {
+            "Mihaeu\\SubCollector\\": ["src/", "tests/unit/"]
         }
     }
 }
