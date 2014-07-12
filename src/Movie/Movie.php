@@ -31,7 +31,7 @@ class Movie
     private $movieName;
 
     /**
-     * Constructor.
+     * @param string $movieFile
      */
     public function __construct($movieFile)
     {
@@ -40,8 +40,7 @@ class Movie
         $this->movieName = preg_replace('/\.[0-9a-zA-Z]+$/', '', $this->movieFile->getBasename());
 
         $subtitleFile = $this->movieFile->getPath().DIRECTORY_SEPARATOR.$this->movieName.'.srt';
-        if (file_exists($subtitleFile))
-        {
+        if (file_exists($subtitleFile)) {
             $this->subtitleFile = new \SplFileObject($subtitleFile);
         }
     }

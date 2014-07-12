@@ -2,6 +2,9 @@
 
 namespace Mihaeu\SubCollector;
 
+use Mihaeu\SubCollector\Movie\Movie;
+use Mihaeu\SubCollector\Provider\SubProviderInterface;
+
 /**
  * This class is the main an orchestrates the different components.
  *
@@ -17,8 +20,10 @@ class SubCollector
 
     /**
      * Constructor.
+     *
+     * @param SubProviderInterface $subtitleProvider
      */
-    public function __construct(Provider\SubProviderInterface $subtitleProvider)
+    public function __construct(SubProviderInterface $subtitleProvider)
     {
         $this->subtitleProvider = $subtitleProvider;
     }
@@ -26,14 +31,13 @@ class SubCollector
     /**
      * Download the subtitle for a movie from the SubDB API.
      *
-     * @param  Movie\Movie
+     * @param  Movie       $movie
      * @return string|bool
      */
-    public function downloadSubtitle(Movie\Movie $movie)
+    public function downloadSubtitle(Movie $movie)
     {
         $hash = $this->subtitleProvider->createMovieHashFromMovieFile($movie);
-        if ( ! $hash)
-        {
+        if (!$hash) {
             return false;
         }
 
@@ -43,15 +47,14 @@ class SubCollector
     /**
      * Downloads and saves the subtitle to the movie.
      *
-     * @param Movie\Movie $movie
+     * @param Movie $movie
      * @return bool
      */
-    public function addSubtitleToMovie(Movie\Movie $movie)
+    public function addSubtitleToMovie(Movie $movie)
     {
         // fetch subtitle
         $subtitle = $this->downloadSubtitle($movie);
-        if (empty($subtitle))
-        {
+        if (empty($subtitle)) {
             return false;
         }
 

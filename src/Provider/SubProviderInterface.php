@@ -2,6 +2,8 @@
 
 namespace Mihaeu\SubCollector\Provider;
 
+use Mihaeu\SubCollector\Movie\Movie;
+
 /**
  * Class SubProviderInterface.php
  *
@@ -9,7 +11,7 @@ namespace Mihaeu\SubCollector\Provider;
  */
 interface SubProviderInterface
 {
-    public function createMovieHashFromMovieFile(\Mihaeu\Movie\Movie $movie);
+    public function createMovieHashFromMovieFile(Movie $movie);
 
     public function downloadSubtitleByHash($hash);
 }
