@@ -19,5 +19,5 @@ require __DIR__.'/../vendor/autoload.php';
 
 //ini_set('memory_limit', -1);
 
-$application = new \Mihaeu\Console\SubCollectorApplication();
+$application = new \Mihaeu\SubCollector\Console\SubCollectorApplication();
 $application->run();
