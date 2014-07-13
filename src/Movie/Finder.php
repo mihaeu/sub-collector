@@ -48,7 +48,8 @@ class Finder
             \RecursiveIteratorIterator::SELF_FIRST
         );
         $movies = array();
-        foreach ($fileIterator as $key => $value)
+        $files = iterator_to_array($fileIterator);
+        foreach ($files as $key => $value)
         {
             if (is_dir($key) || !is_readable($key))
             {
