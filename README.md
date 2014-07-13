@@ -4,6 +4,8 @@
 [![Build Status](https://travis-ci.org/mihaeu/sub-collector.png)](https://travis-ci.org/mihaeu/sub-collector)
 [![Coverage Status](https://coveralls.io/repos/mihaeu/sub-collector/badge.png)](https://coveralls.io/r/mihaeu/sub-collector)
 
+![sub-collector usage example](http://kimai.mike-dev.info/sub-collector-example.gif)
+
 Sub-Collector is a small project that I started, because I was sick of manually searching for subtitles for my ever growing collection of movies.
 
 There are other tools out there which are way more mature and which have a wide selection of features. These tools however were not written in PHP and this is console based, so let's see where it goes.
@@ -15,7 +17,7 @@ There are other tools out there which are way more mature and which have a wide 
 Make sure `~/.composer/bin` is in your `$PATH` and then simply execute:
 
 ```bash
-composer global require mihaeu/sub-collector:2.*
+composer global require mihaeu/sub-collector:dev-master
 ```
 
 ## Usage
