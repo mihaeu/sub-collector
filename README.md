@@ -34,7 +34,7 @@ vendor/bin/phpunit --testdoc --coverage-text
 
 The `--testdox` produces a more "agile" (buzzzz!) output which is a good way to get started if you're trying to check out the functionality. The whole command will produce something like this:
 
-```sh
+```bash
 # ...
 
 DownloadCommand

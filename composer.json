@@ -2,6 +2,7 @@
     "name": "mihaeu/sub-collector",
     "description": "Sub-Collector is a console based app written in PHP, its main purpose is to batch collect subtitles.",
     "keywords": ["subtitle", "SubDB", "movie"],
+    "license": "MIT",
     "authors": [
         {
             "name": "Michael Haeuslmann",

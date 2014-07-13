@@ -45,7 +45,7 @@ class SubDBSubProvider implements SubProviderInterface
         $curlHandle = curl_init(self::API_URL.$query);
         curl_setopt_array($curlHandle, array(
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_USERAGENT => self::API_USERAGENT
+            CURLOPT_USERAGENT => self::API_USERAGENT,
         ));
         $curlResponse = curl_exec($curlHandle);
         curl_close($curlHandle);

@@ -18,7 +18,10 @@ class Finder
     /**
      * @var array
      */
-    private $movieFileExtensions = array('mov', 'mkv', 'avi', 'mp4', 'mpg', 'mpeg', 'mts', 'flv', 'wmv');
+    private $movieFileExtensions = array(
+        'mov', 'mkv', 'avi', 'mp4', 'mpg',
+        'mpeg', 'mts', 'flv', 'wmv'
+    );
 
     /**
      * @param string       $directory
@@ -45,13 +48,23 @@ class Finder
             \RecursiveIteratorIterator::SELF_FIRST
         );
         $movies = array();
-        foreach ($fileIterator as $key => $value) {
-            if (is_dir($key)) {
+        foreach ($fileIterator as $key => $value)
+        {
+            if (is_dir($key) || !is_readable($key))
+            {
                 continue;
             }
 
-            $movieFile = new Movie($key);
-            if (in_array($movieFile->getMovieFileExtension(), $this->movieFileExtensions)) {
+            $movieFile = null;
+            try {
+                $movieFile = new Movie($key);
+            } catch (\RuntimeException $e) {
+                // don't process system files              
+            }
+
+            if ($movieFile !== null
+                && in_array($movieFile->getMovieFileExtension(), $this->movieFileExtensions))
+            {
                 $movies[] = $movieFile;
             }
         }
