@@ -23,5 +23,8 @@
         "psr-4": {
             "Mihaeu\\SubCollector\\": ["src/", "tests/unit/"]
         }
-    }
+    },
+    "bin": [
+        "bin/sub-collector"
+    ]
 }
