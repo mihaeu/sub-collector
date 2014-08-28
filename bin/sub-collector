@@ -20,4 +20,5 @@ ini_set('memory_limit', -1);
 
 $application = new \Mihaeu\Console\SubCollectorApplication();
 $application->add(new \Mihaeu\Console\DownloadCommand());
+$application->add(new \Mihaeu\Console\CleanCommand());
 $application->run();
