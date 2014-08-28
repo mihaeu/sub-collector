@@ -50,7 +50,7 @@ class FinderTest extends PHPUnit_Framework_TestCase
 
     public function testOnlyMoviesAreFoundInAFolder()
     {
-        $movies = $this->movieFinder->findMoviesInFolder();
+        $movies = $this->movieFinder->findFilesInFolder();
         $this->assertEquals(3, count($movies));
     }
 
@@ -59,7 +59,7 @@ class FinderTest extends PHPUnit_Framework_TestCase
         $fakePath = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movies'.DIRECTORY_SEPARATOR.'subFolderA';
         $this->movieFinder->setDirectory($fakePath);
 
-        $movies = $this->movieFinder->findMoviesInFolder();
+        $movies = $this->movieFinder->findFilesInFolder();
         $this->assertEquals(1, count($movies));
     }
 
@@ -82,7 +82,7 @@ class FinderTest extends PHPUnit_Framework_TestCase
         // for testing purposes subtitles will be treated as custom movies (content makes no difference)
         // if subtitles are going to be detected, so will movies
         $this->movieFinder = new Mihaeu\Movie\Finder(vfsStream::url('testDir'), array('srt'));
-        $movies = $this->movieFinder->findMoviesInFolder();
+        $movies = $this->movieFinder->findFilesInFolder();
         $this->assertEquals(2, count($movies));
     }
 
@@ -96,8 +96,8 @@ class FinderTest extends PHPUnit_Framework_TestCase
         $unreadableFile = $tmpFolder.DIRECTORY_SEPARATOR.'test.avi';
         touch($unreadableFile);
         chmod($unreadableFile, 000); // unreadable file
-        
+
         $movieFinder = new Mihaeu\Movie\Finder($tmpFolder);
-        $this->assertEquals(0, count($movieFinder->findMoviesInFolder()));
+        $this->assertEquals(0, count($movieFinder->findFilesInFolder()));
     }
 }
