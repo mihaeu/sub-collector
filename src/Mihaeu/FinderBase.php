@@ -23,6 +23,9 @@ abstract class FinderBase
         $this->fileExtensions = $fileExtensions;
     }
 
+    /**
+     * $s name of class inherited from \Mihaeu\File
+     */
     public function setCreateObject($s)
     {
         $this->createObject = $s;
@@ -47,17 +50,17 @@ abstract class FinderBase
                 continue;
             }
 
-            $movieFile = null;
+            $file = null;
             try {
-                $movieFile = new $this->createObject($key);
+                $file = new $this->createObject($key);
             } catch (\RuntimeException $e) {
                 // don't process system files
             }
 
-            if ($movieFile !== null
-                && in_array($movieFile->getExtension(), $this->fileExtensions))
+            if ($file !== null
+                && in_array($file->getExtension(), $this->fileExtensions))
             {
-                $result[] = $movieFile;
+                $result[] = $file;
             }
 
         }
