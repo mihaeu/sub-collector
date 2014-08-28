@@ -17,6 +17,7 @@ class SubCollectorApplication extends Application
         parent::__construct('sub-collector');
 
         $this->add(new DownloadCommand());
+        $this->add(new CleanCommand());
     }
 
     public function getHelp()

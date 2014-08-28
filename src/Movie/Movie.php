@@ -8,7 +8,7 @@ namespace Mihaeu\SubCollector\Movie;
  * @package Mihaeu\Movie
  * @author Michael Haeuslmann <haeuslmann@gmail.com>
  */
-class Movie extends \Mihaeu\File
+class Movie extends \Mihaeu\SubCollector\File
 {
     /**
      * @var \SplFileObject
