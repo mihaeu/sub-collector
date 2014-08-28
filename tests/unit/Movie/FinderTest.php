@@ -85,7 +85,7 @@ class FinderTest extends \PHPUnit_Framework_TestCase
     {
         // for testing purposes subtitles will be treated as custom movies (content makes no difference)
         // if subtitles are going to be detected, so will movies
-        $this->movieFinder = new Mihaeu\Movie\Finder(vfsStream::url('testDir'), array('srt'));
+        $this->movieFinder = new \Mihaeu\SubCollector\Movie\Finder(vfsStream::url('testDir'), array('srt'));
         $movies = $this->movieFinder->findFilesInFolder();
         $this->assertEquals(2, count($movies));
     }
@@ -101,7 +101,7 @@ class FinderTest extends \PHPUnit_Framework_TestCase
         touch($unreadableFile);
         chmod($unreadableFile, 000); // unreadable file
 
-        $movieFinder = new Mihaeu\Movie\Finder($tmpFolder);
+        $movieFinder = new \Mihaeu\SubCollector\Movie\Finder($tmpFolder);
         $this->assertEquals(0, count($movieFinder->findFilesInFolder()));
     }
 }
