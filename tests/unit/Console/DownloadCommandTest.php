@@ -1,11 +1,12 @@
 <?php
 
-use Symfony\Component\Console\Tester\CommandTester;
-use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
+namespace Mihaeu\SubCollector\Tests\Console;
 
-use Mihaeu\Console\SubCollectorApplication;
-use Mihaeu\Console\DownloadCommand;
+use org\bovigo\vfs\vfsStream;
+use Symfony\Component\Console\Tester\CommandTester;
+
+use Mihaeu\SubCollector\Console\SubCollectorApplication;
+use Mihaeu\SubCollector\Console\DownloadCommand;
 
 /**
  * DownloadCommandTest
@@ -15,7 +16,7 @@ use Mihaeu\Console\DownloadCommand;
  *
  * @author Michael Haeuslmann <haeuslmann@gmail.com>
  */
-class DownloadCommandTest extends PHPUnit_Framework_TestCase
+class DownloadCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
@@ -34,7 +35,7 @@ class DownloadCommandTest extends PHPUnit_Framework_TestCase
 
     public function testDownloadingOfSubtitlesForAMovieWithoutSubtitleAndExistingSubtitleOnServer()
     {
-        $mockedProvider = \Mockery::mock('\Mihaeu\Provider\SubProviderInterface');
+        $mockedProvider = \Mockery::mock('\Mihaeu\SubCollector\Provider\SubProviderInterface');
         $mockedProvider
             ->shouldReceive('createMovieHashFromMovieFile')
             ->andReturn('hash');
@@ -54,7 +55,7 @@ class DownloadCommandTest extends PHPUnit_Framework_TestCase
 
     public function testDownloadOfSubtitlesForMovieWithoutSubtitleButNoSubtitleOnServer()
     {
-        $mockedProvider = \Mockery::mock('\Mihaeu\Provider\SubProviderInterface');
+        $mockedProvider = \Mockery::mock('\Mihaeu\SubCollector\Provider\SubProviderInterface');
         $mockedProvider
             ->shouldReceive('createMovieHashFromMovieFile')
             ->andReturn('hash');

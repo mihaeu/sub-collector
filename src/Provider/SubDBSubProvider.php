@@ -1,6 +1,8 @@
 <?php
 
-namespace Mihaeu\Provider;
+namespace Mihaeu\SubCollector\Provider;
+
+use Mihaeu\SubCollector\Movie\Movie;
 
 /**
  * Implementation for the SubDB API.
@@ -13,7 +15,7 @@ class SubDBSubProvider implements SubProviderInterface
     const API_URL = 'http://api.thesubdb.com/';
     const API_USERAGENT = 'SubDB/1.0 (MovieManager/1.0; http://mike-dev.info)';
 
-    public function createMovieHashFromMovieFile(\Mihaeu\Movie\Movie $movie)
+    public function createMovieHashFromMovieFile(Movie $movie)
     {
         // block size which is required for the API call
         $READ_SIZE = 64 * 1024;

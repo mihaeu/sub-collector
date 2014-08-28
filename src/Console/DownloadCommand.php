@@ -1,15 +1,17 @@
 <?php
 
-namespace Mihaeu\Console;
+namespace Mihaeu\SubCollector\Console;
 
+use Mihaeu\SubCollector\Movie\Finder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use \Mihaeu\Provider\SubProviderInterface;
-use \Mihaeu\Provider\SubDBSubProvider;
+use Mihaeu\SubCollector\Provider\SubProviderInterface;
+use Mihaeu\SubCollector\Provider\SubDBSubProvider;
+use Mihaeu\SubCollector\SubCollector;
+use Mihaeu\SubCollector\Movie\Movie;
 
 /**
  * Class DownloadCommand
@@ -23,11 +25,10 @@ class DownloadCommand extends Command
      */
     private $subProvider;
 
-    public function __construct(SubProviderInterface $subProvider = null)
+    public function __construct( $subProvider = null)
     {
         $this->subProvider = $subProvider;
-        if ($subProvider === null)
-        {
+        if ($subProvider === null) {
             $this->subProvider = new SubDBSubProvider();
         }
 
@@ -49,25 +50,20 @@ class DownloadCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $subCollector = new \Mihaeu\SubCollector($this->subProvider);
-        $movieFinder = new \Mihaeu\Movie\Finder($input->getArgument('path'));
+        $subCollector = new SubCollector($this->subProvider);
+        $movieFinder = new Finder($input->getArgument('path'));
         $movies = $movieFinder->findFilesInFolder();
-        foreach ($movies as $movie)
-        {
-            if ($movie->hasNoSubtitle())
-            {
+
+        /** @var Movie $movie */
+        foreach ($movies as $movie) {
+            if ($movie->hasNoSubtitle()) {
                 $subtitleHasBeenDownloaded = $subCollector->addSubtitleToMovie($movie);
-                if ($subtitleHasBeenDownloaded)
-                {
+                if ($subtitleHasBeenDownloaded) {
                     $output->writeln( '<info>Downloaded subtitle for '.$movie->getName().'</info>');
-                }
-                else
-                {
+                } else {
                     $output->writeln('<comment>No exact match found for '.$movie->getName().'</comment>');
                 }
-            }
-            else
-            {
+            } else {
                 $output->writeln('<comment>'.$movie->getName().' already has a subtitle.</comment>');
             }
         }

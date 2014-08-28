@@ -2,84 +2,41 @@
 # Sub-Collector
 
 [![Build Status](https://travis-ci.org/mihaeu/sub-collector.png)](https://travis-ci.org/mihaeu/sub-collector)
+[![Coverage Status](https://coveralls.io/repos/mihaeu/sub-collector/badge.png)](https://coveralls.io/r/mihaeu/sub-collector)
+
+![sub-collector usage example](http://kimai.mike-dev.info/sub-collector-example.gif)
 
 Sub-Collector is a small project that I started, because I was sick of manually searching for subtitles for my ever growing collection of movies.
 
-Current stable release is v0.1 and the feature set is very, very minimal, but is under active development. There are other tools out there which are way more mature and which have a wide selection of features. This is PHP however and it's console based, so let's see where it goes.
+There are other tools out there which are way more mature and which have a wide selection of features. These tools however were not written in PHP and this is console based, so let's see where it goes.
 
 ## Installation
 
-### Quick install
+> I'm assuming you're familiar with Composer. If you are not and you made it here, I strongly advise you to take 5 minutes to read up on the [Getting Started](https://getcomposer.org/doc/00-intro.md) section. It'll change your life (or at least the way you write PHP).
 
-Assuming you have the usual dev tools (git, global composer, ...) installed:
+Make sure `~/.composer/bin` is in your `$PATH` and then simply execute:
 
-```sh
-git clone https://github.com/mihaeu/sub-collector.git
-cd sub-collector
-composer install
-```
-
-### Detailed install
-
-Run this in your terminal to get the latest Composer version:
-
-```sh
-curl -sS https://getcomposer.org/installer | php
-```
-
-Or if you don't have curl:
-
-```sh
-php -r "eval('?>'.file_get_contents('https://getcomposer.org/installer'));"
-```
-Clone the repository:
-
-```sh
-git clone https://github.com/mihaeu/sub-collector.git
-```
-
-Or if you feel like playing around with the app, create a composer.json file and add Sub-Collector as a dependency to use it in your app:
-
-```json
-{
-    "require": {
-        "mihaeu/sub-collector": "*"
-    }
-}
-```
-
-Finally install Sub-Collector using:
-
-```sh
-php composer.phar install
+```bash
+composer global require mihaeu/sub-collector:dev-master
 ```
 
 ## Usage
 For now Sub-Collector's functionality is very limited. To download subtitles for all the movies (or a single movie) within a path just use:
 
-```sh
-cd [SUB_COLLECTOR_PATH]
-php bin/sub-collector download [PATH_TO_YOUR_MOVIE_COLLECTION]
+```bash
+sub-collector download [PATH_TO_YOUR_MOVIE_COLLECTION]
 ```
-
-## Open Tasks
-- [x] Tests, tests, tests
-- [x] Create a separate movie class
-- [ ] Add further subtitle sources
-- [ ] Create a composer installer
-- [ ] Add a DIC
 
 ## Tests
 I'm aiming for as close to 100% test coverage as is sensible. If you want to check out the tests for yourself install the require-dev deps from composer (default) and run:
 
-```sh
-cd [PATH_TO_YOUR_SUB_COLLECTOR_INSTALLATION]
-php vendor/bin/phpunit --testdoc --coverage-text
+```bash
+vendor/bin/phpunit --testdoc --coverage-text
 ```
 
-The `--testdoc` produces a more "agile" (buzzzz!) output which is a good way to get started if you're trying to check out the functionality. The whole command will produce something like this:
+The `--testdox` produces a more "agile" (buzzzz!) output which is a good way to get started if you're trying to check out the functionality. The whole command will produce something like this:
 
-```sh
+```bash
 # ...
 
 DownloadCommand
@@ -111,3 +68,16 @@ Code Coverage Report
   Lines:   84.00% (84/100)
 
 ```
+
+## Thanks to
+
+ - [themoviedb.org](http://www.themoviedb.org/) for providing a free-to-use API
+ - [Symfony](http://symfony.com/)/[SensioLabs](http://sensiolabs.com/en) and especially [Fabien Potencier](http://fabien.potencier.org/) for what he does for PHP (for this particular project the [DomCrawler](https://github.com/symfony/DomCrawler))
+ - the [Composer](https://getcomposer.org/) team for revolutionizing the way I and many others write PHP
+ - [GitHub](https://github.com) for redefining collaboration
+ - [Travis CI](https://travis-ci.org/) for improving the quality and compatibility of thousands of open source projects
+ - [Sebastian Bergmann](http://sebastian-bergmann.de/) for [PHPUnit](http://phpunit.de) and many other awesome QA tools
+
+## License
+
+MIT, see `LICENSE` file.

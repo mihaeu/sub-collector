@@ -1,7 +1,11 @@
 <?php
 
+namespace Mihaeu\SubCollector\Tests\Movie;
+
+use Mihaeu\SubCollector\Movie\Finder;
+use Mihaeu\SubCollector\Movie\Movie;
+
 use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
 
 /**
  * Class FinderTest
@@ -10,10 +14,10 @@ use org\bovigo\vfs\vfsStreamDirectory;
  *
  * @author Michael Haeuslmann <haeuslmann@gmail.com>
  */
-class FinderTest extends PHPUnit_Framework_TestCase
+class FinderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Mihaeu\Movie\Finder
+     * @var Finder
      */
     private $movieFinder;
 
@@ -36,7 +40,7 @@ class FinderTest extends PHPUnit_Framework_TestCase
             )
         );
         $this->root = vfsStream::setup('testDir', null, $testFiles);
-        $this->movieFinder = new Mihaeu\Movie\Finder(vfsStream::url('testDir'));
+        $this->movieFinder = new Finder(vfsStream::url('testDir'));
     }
 
     public function testOnlyAcceptsDirectories()
@@ -66,14 +70,14 @@ class FinderTest extends PHPUnit_Framework_TestCase
     public function testMovieWithSubtitleWillBeDetected()
     {
         $fakeMovieWithSubtitle = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movies'.DIRECTORY_SEPARATOR.'Armageddon.avi';
-        $movie = new \Mihaeu\Movie\Movie($fakeMovieWithSubtitle);
+        $movie = new Movie($fakeMovieWithSubtitle);
         $this->assertTrue($movie->hasSubtitle());
     }
 
     public function testMovieWithoutSubtitleWillBeDetected()
     {
         $fakeMovieWithoutSubtitle = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movies'.DIRECTORY_SEPARATOR.'Die Hard.mkv';
-        $movie = new \Mihaeu\Movie\Movie($fakeMovieWithoutSubtitle);
+        $movie = new Movie($fakeMovieWithoutSubtitle);
         $this->assertTrue($movie->hasNoSubtitle());
     }
 

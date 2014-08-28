@@ -1,6 +1,6 @@
 <?php
 
-namespace Mihaeu\Movie;
+namespace Mihaeu\SubCollector\Movie;
 
 /**
  * Represents a movie file.
@@ -21,7 +21,7 @@ class Movie extends \Mihaeu\File
     private $movieName;
 
     /**
-     * Constructor.
+     * @param string $movieFile
      */
     public function __construct($movieFile)
     {
@@ -29,8 +29,7 @@ class Movie extends \Mihaeu\File
         $this->movieName = $this->getName();
 
         $subtitleFile = $this->movieFile->getPath().DIRECTORY_SEPARATOR.$this->movieName.'.srt';
-        if (file_exists($subtitleFile))
-        {
+        if (file_exists($subtitleFile)) {
             $this->subtitleFile = new \SplFileObject($subtitleFile);
         }
     }

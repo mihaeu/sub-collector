@@ -1,5 +1,11 @@
 <?php
 
+namespace Mihaeu\SubCollector\Tests;
+
+use Mihaeu\SubCollector\Movie\Movie;
+use Mihaeu\SubCollector\SubCollector;
+use Mihaeu\SubCollector\Provider\SubProviderInterface;
+
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 
@@ -10,15 +16,15 @@ use org\bovigo\vfs\vfsStreamDirectory;
  *
  * @author Michael Haeuslmann <haeuslmann@gmail.com>
  */
-class SubCollectorTest extends PHPUnit_Framework_TestCase
+class SubCollectorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Mihaeu\SubCollector
+     * @var SubCollector
      */
     private $subCollector;
 
     /**
-     * @var Mihaeu\Provider\SubProviderInterface
+     * @var SubProviderInterface
      */
     private $mockSubProvider;
 
@@ -27,12 +33,10 @@ class SubCollectorTest extends PHPUnit_Framework_TestCase
      */
     private $root;
 
-    private $testDir;
-
     public function setUp()
     {
-        $this->mockSubProvider = \Mockery::mock('\Mihaeu\Provider\SubDBSubProvider');
-        $this->subCollector = new \Mihaeu\SubCollector($this->mockSubProvider);
+        $this->mockSubProvider = \Mockery::mock('\Mihaeu\SubCollector\Provider\SubDBSubProvider');
+        $this->subCollector = new SubCollector($this->mockSubProvider);
 
         // mock the filesystem
         $testFiles = array(
@@ -56,43 +60,43 @@ class SubCollectorTest extends PHPUnit_Framework_TestCase
     public function testSubtitleCanBeDownloadedIfExists()
     {
         // mock sub provider
-        $mock = \Mockery::mock('\Mihaeu\Provider\SubProviderInterface');
+        $mock = \Mockery::mock('\Mihaeu\SubCollector\Provider\SubProviderInterface');
         $mock->shouldReceive('createMovieHashFromMovieFile')
             ->andReturn('hash');
         $mock->shouldReceive('downloadSubtitleByHash')
             ->andReturn('a subtitle');
 
-        $subCollector = new \Mihaeu\SubCollector($mock);
-        $subtitle = $subCollector->downloadSubtitle(\Mockery::mock('\Mihaeu\Movie\Movie'));
+        $subCollector = new SubCollector($mock);
+        $subtitle = $subCollector->downloadSubtitle(\Mockery::mock('\Mihaeu\SubCollector\Movie\Movie'));
         $this->assertNotEmpty($subtitle);
     }
 
     public function testSubtitleCannotBeDownloadedIfItDoesNotExist()
     {
-        $mock = \Mockery::mock('\Mihaeu\Provider\SubProviderInterface');
+        $mock = \Mockery::mock('\Mihaeu\SubCollector\Provider\SubProviderInterface');
         $mock->shouldReceive('createMovieHashFromMovieFile')
             ->andReturn(false);
-        $subCollector = new \Mihaeu\SubCollector($mock);
-        $subtitle = $subCollector->downloadSubtitle(\Mockery::mock('\Mihaeu\Movie\Movie'));
+        $subCollector = new SubCollector($mock);
+        $subtitle = $subCollector->downloadSubtitle(\Mockery::mock('\Mihaeu\SubCollector\Movie\Movie'));
         $this->assertFalse($subtitle);
     }
 
     public function testDownloadedSubtitleWillBeSavedAsASrtFile()
     {
         // mock the sub provider
-        $mock = \Mockery::mock('\Mihaeu\Provider\SubProviderInterface');
+        $mock = \Mockery::mock('\Mihaeu\SubCollector\Provider\SubProviderInterface');
         $mock->shouldReceive('createMovieHashFromMovieFile')
             ->andReturn('hash');
         $mock->shouldReceive('downloadSubtitleByHash')
             ->andReturn('a subtitle');
-        $subCollector = new \Mihaeu\SubCollector($mock);
+        $subCollector = new SubCollector($mock);
 
         // sub doesnt exist before
         $fakeSubtitle = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movies'.DIRECTORY_SEPARATOR.'Die Hard.srt';
         $this->assertFalse(file_exists($fakeSubtitle), 'Subtitle already exists.');
 
         // fetch sub
-        $fakeMovieWithoutSubtitle = new Mihaeu\Movie\Movie(
+        $fakeMovieWithoutSubtitle = new Movie(
             vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movies'.DIRECTORY_SEPARATOR.'Die Hard.mkv'
         );
         $this->assertTrue($subCollector->addSubtitleToMovie($fakeMovieWithoutSubtitle), 'Subtitle was not downloaded.');
@@ -104,12 +108,12 @@ class SubCollectorTest extends PHPUnit_Framework_TestCase
     public function testSubtitleFileWillOnlyBeSavedWhenSubtitleWasFound()
     {
         // mock the sub provider
-        $mock = \Mockery::mock('\Mihaeu\Provider\SubProviderInterface');
+        $mock = \Mockery::mock('\Mihaeu\SubCollector\Provider\SubProviderInterface');
         $mock->shouldReceive('createMovieHashFromMovieFile')
             ->andReturn(false);
 
-        $subCollector = new \Mihaeu\SubCollector($mock);
-        $fakeMovieWithoutSubtitle = new Mihaeu\Movie\Movie(
+        $subCollector = new SubCollector($mock);
+        $fakeMovieWithoutSubtitle = new Movie(
             vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movies'.DIRECTORY_SEPARATOR.'Die Hard.mkv'
         );
         $this->assertFalse($subCollector->addSubtitleToMovie($fakeMovieWithoutSubtitle));
