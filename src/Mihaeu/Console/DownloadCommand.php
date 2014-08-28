@@ -51,7 +51,7 @@ class DownloadCommand extends Command
     {
         $subCollector = new \Mihaeu\SubCollector($this->subProvider);
         $movieFinder = new \Mihaeu\Movie\Finder($input->getArgument('path'));
-        $movies = $movieFinder->findMoviesInFolder();
+        $movies = $movieFinder->findFilesInFolder();
         foreach ($movies as $movie)
         {
             if ($movie->hasNoSubtitle())

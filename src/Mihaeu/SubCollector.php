@@ -56,7 +56,7 @@ class SubCollector
         }
 
         // save subtitle
-        $subtitlePath = preg_replace('/\.\w+$/', '.srt', $movie->getMovieFilename());
+        $subtitlePath = preg_replace('/\.\w+$/', '.srt', $movie->getFilename());
         $bytesWritten = file_put_contents($subtitlePath, $subtitle);
         return $bytesWritten !== false;
     }
