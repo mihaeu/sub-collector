@@ -46,7 +46,7 @@ abstract class FinderBase
             {
                 continue;
             }
-// TODO remove movieFile from here
+
             $movieFile = null;
             try {
                 $movieFile = new $this->createObject($key);
