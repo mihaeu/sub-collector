@@ -7,7 +7,8 @@ class SrtWriter implements ISubtitleWriter
     /**
      * Renders captions using specified subtitle writer
      *
-     * @param array $caps array of \Reader\SubtitleCaption
+     * @param array $caps array of Caption
+     * @param string $lf
      * @return string
      */
     public static function render(array $caps, $lf = "\r\n")
@@ -31,13 +32,11 @@ class SrtWriter implements ISubtitleWriter
 
     /**
      * Renders a second representation as "00:00:06,018"
+     *
+     * @param int $secs
      */
     public static function renderDuration($secs)
     {
-        if (!is_numeric($secs)) {
-            throw new \InvalidArgumentException();
-        }
-
         if (!$secs) {
             return '00:00:00,000';
         }
@@ -65,13 +64,12 @@ class SrtWriter implements ISubtitleWriter
     /**
      * Rounds a number to exactly $precision number of decimals,
      * padding with zeros if nessecary
+     *
+     * @param float $val
+     * @param int $precision
      */
     private static function roundExact($val, $precision)
     {
-        if (!is_numeric($val)) {
-            throw new \InvalidArgumentException();
-        }
-
         $ex = explode('.', round($val, $precision));
 
         if (empty($ex[1]) || strlen($ex[1]) < $precision) {

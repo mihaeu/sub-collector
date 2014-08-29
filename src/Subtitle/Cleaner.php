@@ -4,12 +4,6 @@ namespace Mihaeu\SubCollector\Subtitle;
 
 class Cleaner
 {
-    var $output = null;
-    public function __construct(\Symfony\Component\Console\Output\ConsoleOutput $output)
-    {
-        $this->output = $output;
-    }
-
     public function cleanUpFile($fileName)
     {
         $data = file_get_contents($fileName);
@@ -31,7 +25,7 @@ class Cleaner
      * @param $caps array of Subtitle\Caption
      * @return array of cleaned up caps
      */
-    private function cleanupCaptions(array $caps)
+    public function cleanupCaptions(array $caps)
     {
         $strings = array(
         // eng subs:
@@ -70,7 +64,7 @@ class Cleaner
                             $s .= '"'.$t."\",\t";
                         }
 
-                        $this->output->writeln($s);
+                        echo $s."\n";
 
                         $skip = true;
                         $this->changes++;
@@ -81,7 +75,7 @@ class Cleaner
                 if (substr($cap->text[$i], -2) == '?.') {
                     $cap->text[$i] = substr($cap->text[$i], 0, -1);
 
-                    $this->output->writeln('Changed cap '.$cap->seq.': ?. -> ? in "'.$cap->text[$i]."\"");
+                    echo 'Changed cap '.$cap->seq.': ?. -> ? in "'.$cap->text[$i]."\"\n";
                     $skip = true;
                     $changes++;
                 }

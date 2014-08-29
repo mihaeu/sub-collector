@@ -9,8 +9,4 @@ namespace Mihaeu\SubCollector\Subtitle;
  */
 class Subtitle extends \Mihaeu\SubCollector\File
 {
-    public function cleanUpFile($inputFileName, $outputFileName)
-    {
-        // XXX write to file
-    }
 }
