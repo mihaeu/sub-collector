@@ -12,6 +12,7 @@ class Cleaner
             $arr = SrtParser::parse($data);
             $arr = self::cleanupCaptions($arr);
             $outData = SrtWriter::render($arr);
+            rename($fileName, $fileName.'.org');
             file_put_contents($fileName, $outData);
         } catch (\Exception $e) {
             echo "EXCEPTION: ".$e->getMessage()."\n";
