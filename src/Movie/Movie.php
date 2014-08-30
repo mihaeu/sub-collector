@@ -8,22 +8,12 @@ namespace Mihaeu\SubCollector\Movie;
  * @package Mihaeu\Movie
  * @author Michael Haeuslmann <haeuslmann@gmail.com>
  */
-class Movie
+class Movie extends \Mihaeu\SubCollector\File
 {
     /**
      * @var \SplFileObject
      */
-    private $movieFile;
-
-    /**
-     * @var \SplFileObject
-     */
     private $subtitleFile = null;
-
-    /**
-     * @var string
-     */
-    private $movieFileExtension;
 
     /**
      * @var string
@@ -35,8 +25,7 @@ class Movie
      */
     public function __construct($movieFile)
     {
-        $this->movieFile = new \SplFileObject($movieFile);
-        $this->movieFileExtension = $this->movieFile->getExtension();
+        parent::__construct($movieFile);
         $this->movieName = $this->getName();
 
         $subtitleFile = $this->movieFile->getPath().DIRECTORY_SEPARATOR.$this->movieName.'.srt';
@@ -59,22 +48,6 @@ class Movie
     public function hasNoSubtitle()
     {
         return $this->subtitleFile === null;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMovieFileExtension()
-    {
-        return $this->movieFileExtension;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMovieFilename()
-    {
-        return $this->movieFile->getPath().DIRECTORY_SEPARATOR.$this->movieFile->getBasename();
     }
 
     /**

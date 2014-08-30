@@ -52,7 +52,7 @@ class DownloadCommand extends Command
     {
         $subCollector = new SubCollector($this->subProvider);
         $movieFinder = new Finder($input->getArgument('path'));
-        $movies = $movieFinder->findMoviesInFolder();
+        $movies = $movieFinder->findFilesInFolder();
 
         /** @var Movie $movie */
         foreach ($movies as $movie) {

@@ -54,7 +54,7 @@ class FinderTest extends \PHPUnit_Framework_TestCase
 
     public function testOnlyMoviesAreFoundInAFolder()
     {
-        $movies = $this->movieFinder->findMoviesInFolder();
+        $movies = $this->movieFinder->findFilesInFolder();
         $this->assertEquals(3, count($movies));
     }
 
@@ -63,7 +63,7 @@ class FinderTest extends \PHPUnit_Framework_TestCase
         $fakePath = vfsStream::url('testDir').DIRECTORY_SEPARATOR.'movies'.DIRECTORY_SEPARATOR.'subFolderA';
         $this->movieFinder->setDirectory($fakePath);
 
-        $movies = $this->movieFinder->findMoviesInFolder();
+        $movies = $this->movieFinder->findFilesInFolder();
         $this->assertEquals(1, count($movies));
     }
 
@@ -85,8 +85,23 @@ class FinderTest extends \PHPUnit_Framework_TestCase
     {
         // for testing purposes subtitles will be treated as custom movies (content makes no difference)
         // if subtitles are going to be detected, so will movies
-        $this->movieFinder = new Finder(vfsStream::url('testDir'), array('srt'));
-        $movies = $this->movieFinder->findMoviesInFolder();
+        $this->movieFinder = new \Mihaeu\SubCollector\Movie\Finder(vfsStream::url('testDir'), array('srt'));
+        $movies = $this->movieFinder->findFilesInFolder();
         $this->assertEquals(2, count($movies));
+    }
+
+    public function testIgnoresFilesItCannotRead()
+    {
+        // create a temp movie file, which cannot be read
+        $tmpFolder = sys_get_temp_dir().DIRECTORY_SEPARATOR.'phpunit_mihaeu';
+        if (!is_dir($tmpFolder)) {
+            mkdir($tmpFolder);
+        }
+        $unreadableFile = $tmpFolder.DIRECTORY_SEPARATOR.'test.avi';
+        touch($unreadableFile);
+        chmod($unreadableFile, 000); // unreadable file
+
+        $movieFinder = new \Mihaeu\SubCollector\Movie\Finder($tmpFolder);
+        $this->assertEquals(0, count($movieFinder->findFilesInFolder()));
     }
 }

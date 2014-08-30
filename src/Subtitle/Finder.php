@@ -1,12 +1,11 @@
 <?php
 
-namespace Mihaeu\SubCollector\Movie;
+namespace Mihaeu\SubCollector\Subtitle;
 
 /**
- * Searches and identifies movie files.
+ * Searches and identifies subtitle files.
  *
  * @package Mihaeu\Movie
- * @author Michael Haeuslmann <haeuslmann@gmail.com>
  */
 class Finder extends \Mihaeu\SubCollector\FinderBase
 {
@@ -17,12 +16,11 @@ class Finder extends \Mihaeu\SubCollector\FinderBase
         if ( empty($fileExtensions))
         {
             $fileExtensions = array(
-                'mov', 'mkv', 'avi', 'mp4', 'mpg',
-                'mpeg', 'mts', 'flv', 'wmv'
+                'srt'
             );
         }
         $this->setFileExtensions($fileExtensions);
 
-        $this->setCreateObject('\Mihaeu\SubCollector\Movie\Movie');
+        $this->setCreateObject('\Mihaeu\SubCollector\Subtitle\Subtitle');
     }
 }

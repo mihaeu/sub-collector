@@ -21,7 +21,7 @@ class SubDBSubProvider implements SubProviderInterface
         $READ_SIZE = 64 * 1024;
 
         // open file handle
-        $handle = fopen($movie->getMovieFilename(), 'r');
+        $handle = fopen($movie->getFilename(), 'r');
 
         // read first part
         $data = fread($handle, $READ_SIZE);
