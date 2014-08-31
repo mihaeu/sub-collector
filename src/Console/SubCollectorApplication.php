@@ -18,6 +18,7 @@ class SubCollectorApplication extends Application
 
         $this->add(new DownloadCommand());
         $this->add(new CleanCommand());
+        $this->add(new DownloadCleanCommand());
     }
 
     public function getHelp()
