@@ -43,15 +43,6 @@ class FinderTest extends \PHPUnit_Framework_TestCase
         $this->movieFinder = new Finder(vfsStream::url('testDir'));
     }
 
-    public function testOnlyAcceptsDirectories()
-    {
-        $fakeMovie = vfsStream::url('testDir').
-            DIRECTORY_SEPARATOR.'movies'.
-            DIRECTORY_SEPARATOR.'Armageddon.avi';
-        $this->setExpectedException('InvalidArgumentException');
-        $this->movieFinder->setDirectory($fakeMovie);
-    }
-
     public function testOnlyMoviesAreFoundInAFolder()
     {
         $movies = $this->movieFinder->findFilesInFolder();
