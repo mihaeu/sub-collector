@@ -39,6 +39,16 @@ abstract class FinderBase
      */
     public function findFilesInFolder()
     {
+        if (is_file($this->directory))
+        {
+            return array(new $this->createObject($this->directory));
+        }
+
+        if ( ! is_dir($this->directory))
+        {
+            throw new \InvalidArgumentException($this->directory.' is not a directory.');
+        }
+
         $fileIterator = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($this->directory),
             \RecursiveIteratorIterator::SELF_FIRST
@@ -73,10 +83,6 @@ abstract class FinderBase
      */
     public function setDirectory($directory)
     {
-        if ( ! is_dir($directory))
-        {
-            throw new \InvalidArgumentException($directory.' is not a directory.');
-        }
         $this->directory = $directory;
     }
 }
