@@ -15,7 +15,7 @@ class Cleaner
             rename($fileName, $fileName.'.org');
             file_put_contents($fileName, $outData);
         } catch (\Exception $e) {
-            echo "EXCEPTION: ".$e->getMessage()."\n";
+            echo "EXCEPTION: ".$e."\n";
         }
     }
 

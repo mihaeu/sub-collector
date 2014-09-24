@@ -65,12 +65,12 @@ class SrtParser implements ISubtitleParser
     private static function srtTimeFormatInSeconds($s)
     {
         if (!self::isSrtTimeFormat($s)) {
-            throw new \InvalidArgumentException('not a time string: '.$s);
+            throw new \InvalidArgumentException();
         }
 
         $x = explode(':', $s);
         if (count($x) != 3) {
-            throw new \InvalidArgumentException('bad format: '.$s);
+            throw new \InvalidArgumentException();
         }
 
         $x[2] = str_replace(',', '.', $x[2]);
@@ -104,10 +104,8 @@ class SrtParser implements ISubtitleParser
             }
 
             if (!is_numeric($rows[$i])) {
-                throw new \Exception(
-                    'expected sequence number, found odd data at line '.($i+1).
-                    ': "'.$rows[$i]."\"\n".$rows[$i+1]
-                );
+                echo 'ERROR on line '.($i+1).': Expected sequence number, found: "'.$rows[$i]."\"\n".$rows[$i+1]."\n";
+                break;
             }
 
             $seqCounter++;
@@ -118,8 +116,13 @@ class SrtParser implements ISubtitleParser
             // 00:26:36,595 --> 00:26:40,656
             $aa = explode(' --> ', trim($rows[$i+1]));
 
-            $cap->startTime = self::srtTimeFormatInSeconds($aa[0]);
-            $cap->duration  = self::srtTimeFormatInSeconds($aa[1]) - $cap->startTime;
+            try {
+                $cap->startTime = self::srtTimeFormatInSeconds($aa[0]);
+                $cap->duration  = self::srtTimeFormatInSeconds($aa[1]) - $cap->startTime;
+            } catch (\InvalidArgumentException $ex) {
+                echo 'ERROR on line '.($i+1).': Expected time string, found: '.$rows[$i+1]."\n";
+                break;
+            }
 
             // find multi-line sub, allow all text until new numeric is found (next chunk)
             for ($j=2; $j <= 5; $j++) {
@@ -133,7 +136,7 @@ class SrtParser implements ISubtitleParser
                 }
 
                 if (is_numeric($rows[$i+$j]) && $j >= 3 && ($rows[$i+$j] <= 10000)) {
-                    throw new \Exception("XXX: breaking at row ".($i+$j)." on data ". ($rows[$i+$j]));
+                    echo 'ERROR on line '.($i+1).': Unexpected data: '. ($rows[$i+$j])."\n";
                     $i--;
                     break;
                 }
