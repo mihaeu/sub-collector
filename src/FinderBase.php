@@ -41,7 +41,7 @@ abstract class FinderBase
     {
         if (is_file($this->directory))
         {
-            return array(new $this->createObject($this->directory));
+            return array(new $this->createObject(realpath($this->directory)));
         }
 
         if ( ! is_dir($this->directory))
