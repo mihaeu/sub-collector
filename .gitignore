@@ -3,4 +3,3 @@
 .idea
 phpunit.xml
 tags
-composer.lock
